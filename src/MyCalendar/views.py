@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Event
 from .serializers import EventSerializer
+import datetime
 
 
 class MainEvent(APIView):
@@ -10,13 +11,17 @@ class MainEvent(APIView):
 
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk", None)
+        actual = self.request.query_params.get('actual', None)
         if not pk:
-            events = self.event.all()
+            if actual == "true":
+                events = self.event.filter(start_time__gte=datetime.datetime.now()).order_by('start_time')
+            else:
+                events = self.event.all().order_by('start_time')
         else:
             events = self.event.filter(pk=pk)
 
         serializer = EventSerializer(events, many=True)
-        return Response({"events": serializer.data})
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = EventSerializer(data=request.data)
