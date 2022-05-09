@@ -1,7 +1,6 @@
 from aiogram import types
 from aiogram.utils import markdown as md
 from .app import dp
-from .keyboards import inline_kb
 from .data_fetcher import API_Metods
 
 LC_MAP = {
@@ -20,5 +19,5 @@ async def actual_events(message: types.Message):
     for event in res:
         for event_field in event:
             text += f"{LC_MAP[event_field]} : {md.hbold(event[event_field])}\n"
-    await message.reply(text, reply_markup=inline_kb, parse_mode="HTML")
+    await message.reply(text, parse_mode="HTML")
 

@@ -1,4 +1,3 @@
-import aiohttp
 import json
 import urllib3
 from .local_settings import API_URL
@@ -30,11 +29,10 @@ class API_Metods():
         self.__response_data__ = response.data
         return self.__parse_data__()
 
+    def put_change_event(self, pk, payload):
+        response = http.request("PUT", f"{API_URL}/events/{pk}", fields=payload)
+        self.__response_data__ = response.data
+        return self.__parse_data__()
+
     def __parse_data__(self):
         return json.loads(self.__response_data__.decode("utf-8"))
-
-
-
-
-
-

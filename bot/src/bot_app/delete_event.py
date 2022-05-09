@@ -6,24 +6,23 @@ from .data_fetcher import API_Metods
 from . import messages
 
 
-class FMSDelete(StatesGroup):
+class FSMDelete(StatesGroup):
     delete = State()
 
 
 @dp.message_handler(commands='delete_event', state=None)
 async def delete_event(message: types.Message):
-    await FMSDelete.delete.set()  # в этот момент бот запомнил, что удвление началось
-    await message.reply(messages.DELETE_MESSAGE)
+    await FSMDelete.delete.set()
+    await message.reply(messages.REQUEST_ID)
 
 
-# ловим первый ответ от пользователя
-@dp.message_handler(content_types=['text'], state=FMSDelete.delete)
+@dp.message_handler(state=FSMDelete.delete)
 async def load_id(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        data['text'] = message.text
-        res = API_Metods().delete_event(data['text'])
-        if res == {"detail":"Not found."}:
+        data['pk'] = message.text
+        res = API_Metods().delete_event(data['pk'])
+        if res == {"detail": "Not found."}:
             await message.reply("Событие не найдено!")
         else:
-            await message.reply(f"Событие ID:{data['text']} успешно удалено!")
+            await message.reply(f"Событие ID:{data['pk']} успешно удалено!")
     await state.finish()
