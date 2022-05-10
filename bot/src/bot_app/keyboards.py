@@ -1,4 +1,4 @@
-from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 inline_button_name = InlineKeyboardButton('Изменить название', callback_data='name')
 inline_button_description = InlineKeyboardButton('Изменить описание', callback_data='description')

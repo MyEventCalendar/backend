@@ -1,3 +1,4 @@
+"""Система диалогов для изменения события в БД"""
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -8,6 +9,7 @@ from .keyboards import inline_kb
 
 
 class FSMChange(StatesGroup):
+    """Структура состояний"""
     id = State()
     poll = State()
     change = State()
@@ -15,6 +17,7 @@ class FSMChange(StatesGroup):
 
 @dp.message_handler(commands=['change_event'], state=None)
 async def change_event(message: types.Message):
+    """Запускает хранение состояний"""
     await FSMChange.id.set()
     await message.reply(messages.REQUEST_ID)
 
