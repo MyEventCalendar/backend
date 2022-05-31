@@ -20,3 +20,4 @@ venv.bak/
 
 # JetBrains IDE
 .idea/
+file.env
