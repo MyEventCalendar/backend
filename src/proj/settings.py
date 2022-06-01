@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-&^%1dle6!jee#u((pg#m#+82$(mrvrw)8t0sfu-90n6nfir686
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 runserver.default_port = os.getenv("DJANGO_PORT")
 runserver.default_addr = os.getenv("DJANGO_HOST")
 
