@@ -3,10 +3,10 @@ from django.db import models
 
 class Event(models.Model):
     name = models.CharField('Title', max_length=200)
-    description = models.TextField()
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    deleted_event = models.BooleanField("deleted", default=False)
+    description = models.TextField('Event description', max_length=400)
+    start_time = models.DateTimeField('Start time')
+    end_time = models.DateTimeField('End time')
+    hidden_event = models.BooleanField('Hidden event', default=False)
 
     def __str__(self):
-        return self.name + " " + self.description, self.end_time, self.end_time
+        return f"{self.name} {self.description} {self.start_time} {self.end_time} {self.hidden_event}"
