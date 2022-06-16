@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'MyCalendar'
+    'MyCalendar',
+    'health_check',                             # required
+    'health_check.db',                          # stock Django health checkers
 
 
 ]
