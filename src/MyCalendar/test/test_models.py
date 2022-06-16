@@ -6,7 +6,7 @@ class EventModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.event = Event.objects.create(name='Dinner', description='Dinner with my family',
+        cls.event = Event.objects.create(name='Dinner', description='Dinner with my family.',
                                          start_time='2022-12-30 17:00:00+00:00', end_time='2022-12-30 19:00:00+00:00',
                                          hidden_event=True)
 
