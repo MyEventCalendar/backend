@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'health_check',                             # required
     'health_check.db',                          # stock Django health checkers
 
-
 ]
 
 MIDDLEWARE = [
