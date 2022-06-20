@@ -8,7 +8,7 @@ class EventModelTest(TestCase):
     def setUpTestData(cls):
         cls.event = Event.objects.create(name='Dinner', description='Dinner with my family.',
                                          start_time='2022-12-30 17:00:00+00:00', end_time='2022-12-30 19:00:00+00:00',
-                                         hidden_event=True)
+                                         hidden=True)
 
     def test_it_has_information_fields(self):
         self.assertIsInstance(self.event.name, str)
@@ -31,7 +31,7 @@ class EventModelTest(TestCase):
             'description': 'Event description',
             'start_time': 'Start time',
             'end_time': 'End time',
-            'hidden_event': 'Hidden event',
+            'hidden': 'Hidden event',
         }
         for field, expected_value in field_verbose.items():
             with self.subTest(field=field):
@@ -41,5 +41,5 @@ class EventModelTest(TestCase):
     def test_object_name_presentation(self):
         event = Event.objects.get(id=1)
         expected_object_name = f"{event.name} {event.description} {event.start_time} " \
-                               f"{event.end_time} {event.hidden_event}"
+                               f"{event.end_time} {event.hidden}"
         self.assertEquals(expected_object_name, str(self.event))

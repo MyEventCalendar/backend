@@ -12,11 +12,31 @@ class MainEvent(APIView):
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk", None)
         actual = self.request.query_params.get('actual', None)
+        hidden = self.request.query_params.get('hidden', None)
         if not pk:
-            if actual == "true":
+            if actual == "all" and hidden == "all":
+                events = self.event.all()
+            elif actual == "all" and hidden == "true":
+                events = self.event.filter(hidden=True)
+            elif actual == "all" and hidden == "false":
+                events = self.event.filter(hidden=False)
+            elif actual == "true" and hidden == "all":
                 events = self.event.filter(start_time__gte=datetime.datetime.now()).order_by('start_time')
+            elif actual == "true" and hidden == "true":
+                events = self.event.filter(hidden=True,
+                                           start_time__gte=datetime.datetime.now()).order_by('start_time')
+            elif actual == "false" and hidden == "all":
+                events = self.event.filter(start_time__lt=datetime.datetime.now()).order_by('start_time')
+            elif actual == "false" and hidden == "true":
+                events = self.event.filter(hidden=False,
+                                           start_time__lt=datetime.datetime.now()).order_by('start_time')
+            elif actual == "false" and hidden == "true":
+                events = self.event.filter(hidden=True,
+                                           start_time__lt=datetime.datetime.now()).order_by('start_time')
+
             else:
-                events = self.event.all().order_by('start_time')
+                events = self.event.filter(hidden=False,
+                                           start_time__gte=datetime.datetime.now()).order_by('start_time')
         else:
             events = self.event.filter(pk=pk)
 
