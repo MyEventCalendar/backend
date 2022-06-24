@@ -4,10 +4,15 @@ from rest_framework.views import APIView
 from .models import Event
 from .serializers import EventSerializer
 import datetime
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class MainEvent(APIView):
+
     event = Event.objects
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk", None)
