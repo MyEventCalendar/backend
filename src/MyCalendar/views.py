@@ -2,10 +2,11 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Event
-from .serializers import EventSerializer
+from .serializers import EventSerializer, LoginSerializer, RegistrationSerializer
 import datetime
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework import status
 
 
 class MainEvent(APIView):
@@ -65,3 +66,22 @@ class MainEvent(APIView):
         events = get_object_or_404(self.event.all(), pk=pk)
         events.delete()
         return Response({"message": "Event with id {} has been deleted.".format(pk)})
+
+
+class RegistrationAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = RegistrationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class LoginAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
