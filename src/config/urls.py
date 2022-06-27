@@ -19,9 +19,10 @@ from MyCalendar import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('events', views.MainEvent.as_view()),
+    path('events/', views.MainEvent.as_view()),
     path('events/<int:pk>', views.MainEvent.as_view()),
-    path('health', include('health_check.urls')),
-
+    path('health/', include('health_check.urls')),
+    path('users/', views.RegistrationAPIView.as_view()),
+    path('login/', views.LoginAPIView.as_view())
 ]
 
