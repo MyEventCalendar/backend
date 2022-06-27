@@ -1,3 +1,5 @@
+from urllib import request
+
 from .models import Event, User
 from rest_framework import serializers
 from django.contrib.auth import authenticate
@@ -6,7 +8,7 @@ from django.contrib.auth import authenticate
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ['pk', 'name', 'description', 'start_time', 'end_time', 'hidden']
+        fields = ['pk', 'name', 'description', 'start_time', 'end_time', 'hidden', 'user']
 
     def create(self, validated_data):
         return Event.objects.create(**validated_data)
@@ -17,6 +19,7 @@ class EventSerializer(serializers.ModelSerializer):
         instance.start_time = validated_data.get('start_time', instance.start_time)
         instance.end_time = validated_data.get('end_time', instance.end_time)
         instance.hidden = validated_data.get('hidden', instance.hidden)
+        instance.user = validated_data.get('user', instance.user)
         instance.save()
         return instance
 
@@ -44,29 +47,23 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, data):
         telegram_id = data.get('telegram_id', None)
         password = data.get('password', None)
-
         if telegram_id is None:
             raise serializers.ValidationError(
                 'An id is required to log in.'
             )
-
         if password is None:
             raise serializers.ValidationError(
                 'A password is required to log in.'
             )
-
         user = authenticate(username=telegram_id, password=password)
-
         if user is None:
             raise serializers.ValidationError(
                 'A user with this id and password was not found.'
             )
-
         if not user.is_active:
             raise serializers.ValidationError(
                 'This user has been deactivated.'
             )
-
         return {
             'telegram_id': user.telegram_id,
             'username': user.username

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager, PermissionsMixin)
 
+from config import settings
+
 
 class Event(models.Model):
     name = models.CharField('Title', max_length=200)
@@ -8,6 +10,7 @@ class Event(models.Model):
     start_time = models.DateTimeField('Start time')
     end_time = models.DateTimeField('End time')
     hidden = models.BooleanField('Hidden event', default=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.name} {self.description} {self.start_time} {self.end_time} {self.hidden}"
